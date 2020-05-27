@@ -19,7 +19,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			EagerLoadSamuraiWithQuotes();
+			ProjectSomeProperties();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -143,6 +143,11 @@ namespace ConsoleApp
 		private static void EagerLoadSamuraiWithQuotes()
 		{
 			var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList();
+		}
+
+		private static void ProjectSomeProperties()
+		{
+			var someProperties = _context.Samurais.Select(s => new { s.ID, s.Name, HappyQuotes = s.Quotes.Where(x => x.Text.Contains("Happy")).ToList() }).ToList();
 		}
 	}
 }
