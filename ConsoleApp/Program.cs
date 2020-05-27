@@ -19,7 +19,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			AddQuoteToExistingSamuraiWhileTracked();
+			EagerLoadSamuraiWithQuotes();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -138,6 +138,11 @@ namespace ConsoleApp
 			//var samurais = _context.Samurais.Where(s => s.Name == name).ToList();
 			//var samurais = _context.Samurais.Find(2);
 			var samurais = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "S%")).ToList();
+		}
+
+		private static void EagerLoadSamuraiWithQuotes()
+		{
+			var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList();
 		}
 	}
 }
