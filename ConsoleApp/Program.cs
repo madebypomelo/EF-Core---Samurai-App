@@ -19,7 +19,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			ExplicitLoadQuotes();
+			FilteringWithRelatedData();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -155,6 +155,11 @@ namespace ConsoleApp
 			var samurai = _context.Samurais.FirstOrDefault(s => s.Name.Contains("Sara"));
 			_context.Entry(samurai).Collection(s => s.Quotes).Load();
 			_context.Entry(samurai).Reference(s => s.Horse).Load();
+		}
+
+		private static void FilteringWithRelatedData()
+		{
+			var samurai = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("happy"))).ToList();
 		}
 	}
 }
