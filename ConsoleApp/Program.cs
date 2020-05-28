@@ -279,8 +279,19 @@ namespace ConsoleApp
 
 			var horseWithSamurais = _context.Samurais
 				.Where(s => s.Horse != null)
-				.Select(s => new { Horse = s.Horse, Samurai = s})
-				.ToList()
+				.Select(s => new { Horse = s.Horse, Samurai = s })
+				.ToList();
+		}
+
+		private static void GetSamuraiWithClan()
+		{
+			var samurai = _context.Samurais.Include(s => s.Clan).FirstOrDefault();
+		}
+		
+		private static void GetClanWithSamurais()
+		{
+			var clan = _context.Clans.Find(1);
+			var samuraisForClan = _context.Samurais.Where(s => s.Clan.ID == 1).ToList();
 		}
 	}
 }
