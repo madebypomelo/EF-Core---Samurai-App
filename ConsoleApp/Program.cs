@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
@@ -292,6 +293,14 @@ namespace ConsoleApp
 		{
 			var clan = _context.Clans.Find(1);
 			var samuraisForClan = _context.Samurais.Where(s => s.Clan.ID == 1).ToList();
+		}
+
+		private static void QuerySamuraiBattleStats()
+		{
+			var stats = _context.SamuraiBattleStats.ToList();
+			var firstStat = _context.SamuraiBattleStats.FirstOrDefault();
+			var andreasStat = _context.SamuraiBattleStats
+				.Where(s => s.Name == "Andreas").FirstOrDefault();
 		}
 	}
 }
