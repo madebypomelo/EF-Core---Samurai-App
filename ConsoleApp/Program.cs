@@ -178,5 +178,27 @@ namespace ConsoleApp
 			newContext.Entry(samurai.Quotes[0]).State = EntityState.Modified;
 			newContext.SaveChanges();
 		}
+
+		private static void JoinBattleAndSamurai()
+		{
+			// Samurai and battle already exist and we have their ID's.
+			var sbJoin = new SamuraiBattle { SamuraiID = 1, BattleID = 3 };
+			_context.Add(sbJoin);
+			_context.SaveChanges();
+		}
+		
+		private static void EnlistSamuraiIntoABattle()
+		{
+			var battle = _context.Battles.Find(1);
+			battle.SamuraiBattles.Add(new SamuraiBattle { SamuraiID = 21 });
+			_context.SaveChanges();
+		}
+
+		private static void RemoveJoinBetweenSamuraiAndBattleSimple()
+		{
+			var join = new SamuraiBattle { SamuraiID = 1, BattleID = 2 };
+			_context.Remove(join);
+			_context.SaveChanges();
+		}
 	}
 }
