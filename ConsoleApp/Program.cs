@@ -19,7 +19,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			ModifyRelatedDataWhenNotTracked();
+			GetSamuraiWithBattles();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -199,6 +199,21 @@ namespace ConsoleApp
 			var join = new SamuraiBattle { SamuraiID = 1, BattleID = 2 };
 			_context.Remove(join);
 			_context.SaveChanges();
+		}
+
+		private static void GetSamuraiWithBattles()
+		{
+			var samuraiWithBattle = _context.Samurais
+				.Include(s => s.SamuraiBattles)
+				.ThenInclude(sb => sb.Battle)
+				.FirstOrDefault(s => s.ID == 5);
+
+			var samuraiWithBattleCleaner = _context.Samurais.Where(s => s.ID == 5)
+				.Select(s => new
+				{
+					Samurai = s,
+					Battles = s.SamuraiBattles.Select(sb => sb.Battle)
+				}).FirstOrDefault();
 		}
 	}
 }
