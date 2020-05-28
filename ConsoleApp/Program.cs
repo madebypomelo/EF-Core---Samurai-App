@@ -19,7 +19,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			FilteringWithRelatedData();
+			ModifyRelatedDataWhenNotTracked();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -160,6 +160,23 @@ namespace ConsoleApp
 		private static void FilteringWithRelatedData()
 		{
 			var samurai = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("happy"))).ToList();
+		}
+
+		private static void ModifyRelatedDataWhenTracked()
+		{
+			var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault(s => s.ID == 2);
+			samurai.Quotes[0].Text = "Did you hear that?";
+			_context.SaveChanges();
+		}
+		
+		private static void ModifyRelatedDataWhenNotTracked()
+		{
+			var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault(s => s.ID == 5);
+			samurai.Quotes[0].Text = "Did you hear that again?";
+
+			using var newContext = new SamuraiContext();
+			newContext.Entry(samurai.Quotes[0]).State = EntityState.Modified;
+			newContext.SaveChanges();
 		}
 	}
 }
