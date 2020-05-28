@@ -13,7 +13,7 @@ namespace SamuraiApp.Data.Migrations
                     SELECT  Samurais.ID, Samurais.Name, Samurais.ClanID
                     FROM Samurais INNER JOIN
                     Quotes ON Samurais.ID = Quotes.SamuraiID
-                    WHERE (Quotes.Text LIKE '%'+@text''%')");
+                    WHERE (Quotes.Text LIKE '%'+@text+'%')");
 
             migrationBuilder.Sql(
                 @"CREATE PROCEDURE dbo.DeleteQuotesForSamurai

@@ -318,5 +318,12 @@ namespace ConsoleApp
 			string name = "Andreas";
 			var samurais = _context.Samurais.FromSqlInterpolated($"SELECT * FROM Samurais WHERE Name = {name}").ToList();
 		}
+
+		private static void InterpolatedRawSqlQueryStoredProcedure()
+		{
+			var text = "Happy";
+			var sumurais = _context.Samurais.FromSqlInterpolated(
+				$"EXEC dbo.SamuraiWhoSaidAWord {text}").ToList();
+		}
 	}
 }
