@@ -256,10 +256,31 @@ namespace ConsoleApp
 
 		private static void ReplaceHorce()
 		{
+			// NOTE: if EF Core didn't know about the samurai object in advance, it won't delete the old horse.
+
 			var samurai = _context.Samurais.Include(s => s.Horse).FirstOrDefault(s => s.ID == 1);
 			samurai.Horse = new Horse { Name = "Trigger" };
 
 			_context.SaveChanges();
+		}
+
+		private static void GetSamuraisWithHorse()
+		{
+			var samurai = _context.Samurais.Include(s => s.Horse);
+
+		}
+		
+		private static void GetHorseWithSamurai()
+		{
+			var horseWithoutSamurai = _context.Set<Horse>().Find(1);
+
+			var horseWithSamurai = _context.Samurais.Include(s => s.Horse)
+				.FirstOrDefault(s => s.Horse.ID == 1);
+
+			var horseWithSamurais = _context.Samurais
+				.Where(s => s.Horse != null)
+				.Select(s => new { Horse = s.Horse, Samurai = s})
+				.ToList()
 		}
 	}
 }
