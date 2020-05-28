@@ -20,7 +20,7 @@ namespace ConsoleApp
 			//GetSamurais("After Add:");
 			//InsertMultipleSamurais();
 			//QueryFilters("Sara");
-			GetSamuraiWithBattles();
+			QueryNumberUsingRawSql();
 			Console.Write("Press any key...");
 			Console.ReadKey();
 		}
@@ -301,6 +301,22 @@ namespace ConsoleApp
 			var firstStat = _context.SamuraiBattleStats.FirstOrDefault();
 			var andreasStat = _context.SamuraiBattleStats
 				.Where(s => s.Name == "Andreas").FirstOrDefault();
+		}
+
+		protected static void QueryUsingRawSql()
+		{
+			var samurais = _context.Samurais.FromSqlRaw("SELECT * FROM Samurais").ToList();
+		}
+		
+		protected static void QueryNumberUsingRawSql()
+		{
+			int count = _context.Samurais.Count();
+		}
+
+		protected static void QueryUsingRawSqlWithInterpolation()
+		{
+			string name = "Andreas";
+			var samurais = _context.Samurais.FromSqlInterpolated($"SELECT * FROM Samurais WHERE Name = {name}").ToList();
 		}
 	}
 }
