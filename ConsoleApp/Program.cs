@@ -215,5 +215,51 @@ namespace ConsoleApp
 					Battles = s.SamuraiBattles.Select(sb => sb.Battle)
 				}).FirstOrDefault();
 		}
+
+		private static void AddNewSamuraiWithHorse()
+		{
+			var samurai = new Samurai
+			{
+				Name = "Julemanden"
+			};
+			samurai.Horse = new Horse { Name = "Silver" };
+
+			_context.Samurais.Add(samurai);
+			_context.SaveChanges();
+		}
+		
+		private static void AddNewHorseToSamuraiUsingID()
+		{
+			var horse = new Horse { Name = "Scout", SamuraiID = 2 };
+
+			_context.Add(horse);
+			_context.SaveChanges();
+		}
+		
+		private static void AddNewHorseToSamuraiObject()
+		{
+			var samurai = _context.Samurais.Find(3);
+			samurai.Horse = new Horse { Name = "Black Betty" };
+			_context.SaveChanges();
+		}
+		
+		private static void AddNewHorseToDisconnectedSamuraiObject()
+		{
+			var samurai = _context.Samurais.AsNoTracking().FirstOrDefault(s => s.ID == 4);
+			samurai.Horse = new Horse { Name = "Mr. Ed" };
+
+			using var newContext = new SamuraiContext();
+
+			newContext.Attach(samurai);
+			newContext.SaveChanges();
+		}
+
+		private static void ReplaceHorce()
+		{
+			var samurai = _context.Samurais.Include(s => s.Horse).FirstOrDefault(s => s.ID == 1);
+			samurai.Horse = new Horse { Name = "Trigger" };
+
+			_context.SaveChanges();
+		}
 	}
 }
